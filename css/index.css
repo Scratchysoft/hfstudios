@@ -5,6 +5,7 @@ ul {
     overflow: hidden;
     background-color: #333;
     border-radius: 25px;
+    overflow: hidden;
 }
 
 li {
@@ -29,4 +30,19 @@ li img:hover:not(.active) {
 
 .active {
     background-color: rgb(33, 134, 216);
+}
+
+.seScale {
+    position: absolute;
+    height: 46px;
+    transform: translateX(-46px) ;
+    border-radius: 25px;
+}
+
+.actives {
+    background-color: rgb(33, 134, 216);
+    position: absolute;
+    height: 46px;
+    transform: translateX(-46px) ;
+    border-radius: 25px;
 }

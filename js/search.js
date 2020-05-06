@@ -1,5 +1,3 @@
-alert("tes");
-
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;
     name = name.replace(/[\[\]]/g, '\\$&');
@@ -9,7 +7,7 @@ function getParameterByName(name, url) {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
-alert(window.location.href.includes("search.html"));
+
 if(getParameterByName("query") != null  && !window.location.href.includes("search.html")){
     window.location.replace("search.html?query=" + getParameterByName("query"));
 }
