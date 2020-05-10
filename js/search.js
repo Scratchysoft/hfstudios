@@ -1,14 +1,14 @@
-var search_items = "";
+var search_items;
 
-$.get('search_items.json', function(data) {
-   search_items = data;
-}, 'text');
-console.log(search_items);
+function getJSON(){
+    $.getJSON("search_items.json", function(json) {
+        console.log(json.Items[0].URL); // this will show the info it in firebug console
+    });
+}
+getJSON();
 var s = JSON.parse(search_items);
 var page_urls = [];
 var page_itemn;
-
-
 
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;
@@ -38,7 +38,10 @@ if(getParameterByName("query") != null && window.location.href.includes("search.
     page_itemn = findStringInList(s.Items);
     page_itemn.forEach(element => {
         page_urls.push(s.Items[element].URL);
+        $("body").append("<p>" + s.Items[element].URL + "</p>");
     });
+
+    
 }
 
 
