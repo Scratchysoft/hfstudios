@@ -1,3 +1,15 @@
+var search_items = "";
+
+$.get('search_items.json', function(data) {
+   search_items = data;
+}, 'text');
+console.log(search_items);
+var s = JSON.parse(search_items);
+var page_urls = [];
+var page_itemn;
+
+
+
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;
     name = name.replace(/[\[\]]/g, '\\$&');
@@ -8,11 +20,25 @@ function getParameterByName(name, url) {
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
 
+function findStringInItemList(list, item){
+    y = [];
+    for(var x = 0; x < list.length; x++) {
+        if(list[x].Name.includes(item)){
+            y.push(x);
+        }
+    }
+    return y;
+}
+
 if(getParameterByName("query") != null  && !window.location.href.includes("search.html")){
     window.location.replace("search.html?query=" + getParameterByName("query"));
 }
 if(getParameterByName("query") != null && window.location.href.includes("search.html")){
     document.getElementById("searchText").innerHTML = getParameterByName("query");
+    page_itemn = findStringInList(s.Items);
+    page_itemn.forEach(element => {
+        page_urls.push(s.Items[element].URL);
+    });
 }
 
 
