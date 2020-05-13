@@ -1,52 +1,10 @@
-var reader; //GLOBAL File Reader object for demo purpose only
-
-/**
- * Check for the various File API support.
- */
-function checkFileAPI() {
-    if (window.File && window.FileReader && window.FileList && window.Blob) {
-        reader = new FileReader();
-        return true; 
-    } else {
-        alert('The File APIs are not fully supported by your browser. Fallback required.');
-        return false;
-    }
-}
-
-var search_items_file;
-
-/**
- * read text input
- */
-function readText(filePath) {
-    var output = ""; //placeholder for text output
-    if(filePath.files && filePath.files[0]) {           
-        reader.onload = function (e) {
-            output = e.target.result;
-            search_items_file = output;
-        };//end onload()
-        reader.readAsText(filePath.files[0]);
-    }//end if html5 filelist support
-    /*else if(ActiveXObject && filePath) { //fallback to IE 6-8 support via ActiveX
-        try {
-            reader = new ActiveXObject("Scripting.FileSystemObject");
-            var file = reader.OpenTextFile(filePath, 1); //ActiveX File Object
-            output = file.ReadAll(); //text contents of file
-            file.Close(); //close file "input stream"
-            displayContents(output);
-        } catch (e) {
-            if (e.number == -2146827859) {
-                alert('Unable to access local files due to browser security settings. ' + 
-                    'To overcome this, go to Tools->Internet Options->Security->Custom Level. ' + 
-                    'Find the setting for "Initialize and script ActiveX controls not marked as safe" and change it to "Enable" or "Prompt"'); 
-            }
-        }       
-    }*/
-    else { //this is where you could fallback to Java Applet, Flash or similar
-        return false;
-    }       
-    return true;
-}
+var search_items_file = `
+{"list": [
+    {"title":"Quick Smash", "type":"game", "id":0,"url":"https://theblueoompaloompa.itch.io/quick-smash"},
+    {"title":"Circular Shooter", "type":"game", "id":1,"url":"https://theblueoompaloompa.itch.io/circular-shooter"},
+    {"title":"Cow", "type":"art", "id":2,"src":"/images/Cow.svg"}
+]}
+`;
 
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;
@@ -66,24 +24,26 @@ if(getParameterByName("query") != null  && !window.location.href.includes("searc
 
 if(getParameterByName("query") != null && window.location.href.includes("search.html")){
     document.getElementById("searchText").innerHTML = query;
-    readText("json/search_items.json")
     var obj = JSON.parse(search_items_file);
     console.log(obj);
     var results = [];
     var searchField = "title";
     var searchVal = query
+    $("body").append('<ul id="results">');
     for (var i=0 ; i < obj.list.length ; i++)
     {
         if (obj.list[i][searchField].includes(searchVal)) {
             results.push(obj.list[i]);
+            console.log(obj.list[i]["type"])
             if(obj.list[i]["type"] == "game"){
-                $("body").append('<a href="' + obj.list[i]["url"] + '">');
+                $("ul#results").append('<li id="result"><a id="result" href="' + obj.list[i]["url"] + '">' + obj.list[i]["title"] + '</a></li>');
             }
             if(obj.list[i]["type"] == "art"){
-                $("body").append('<img src="' + obj.list[i]["src"] + '">');
+                $("ul#results").append('<li id="result"><img id="result" width="300px" style="border-width: 10px;" src="' + obj.list[i]["src"] + '"></img></li>');
             }
         }
     }
+    $("body").append("</ul>");
 }
 
 
